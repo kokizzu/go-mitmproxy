@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	uuid "github.com/satori/go.uuid"
+	uuid "github.com/google/uuid"
 )
 
 // flow http request
@@ -123,7 +123,7 @@ type Flow struct {
 
 func newFlow() *Flow {
 	return &Flow{
-		Id:        uuid.NewV4(),
+		Id:        uuid.New(),
 		StartTime: time.Now(),
 		done:      make(chan struct{}),
 	}

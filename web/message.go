@@ -7,7 +7,7 @@ import (
 	"errors"
 
 	"github.com/lqqyt2423/go-mitmproxy/proxy"
-	uuid "github.com/satori/go.uuid"
+	uuid "github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -220,7 +220,7 @@ func parseMessageEdit(data []byte) *messageEdit {
 
 	mType := (messageType)(data[1])
 
-	id, err := uuid.FromString(string(data[2:38]))
+	id, err := uuid.Parse(string(data[2:38]))
 	if err != nil {
 		return nil
 	}
