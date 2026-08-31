@@ -110,7 +110,7 @@ type Flow struct {
 	ConnContext *ConnContext
 	Request     *Request
 	Response    *Response
-	WebScoket   *WebSocketData
+	WebSocket   *WebSocketData
 	SSE         *SSEData // Server-Sent Events data
 
 	// https://docs.mitmproxy.org/stable/overview-features/#streaming
