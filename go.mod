@@ -11,7 +11,6 @@ require (
 	github.com/samber/lo v1.53.0
 	github.com/sirupsen/logrus v1.9.4
 	github.com/tidwall/match v1.2.0
-	go.uber.org/atomic v1.11.0
 	golang.org/x/net v0.55.0
 )
 

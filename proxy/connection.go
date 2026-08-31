@@ -6,9 +6,9 @@ import (
 	"encoding/json"
 	"net"
 	"net/http"
+	"sync/atomic"
 
 	uuid "github.com/google/uuid"
-	"go.uber.org/atomic"
 )
 
 // client connection
