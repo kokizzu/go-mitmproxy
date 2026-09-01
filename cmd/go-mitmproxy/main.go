@@ -38,6 +38,11 @@ type Config struct {
 func main() {
 	config := loadConfig()
 
+	if config.version {
+		fmt.Println("go-mitmproxy: " + proxy.Version)
+		os.Exit(0)
+	}
+
 	if config.Debug > 0 {
 		rawLog.SetFlags(rawLog.LstdFlags | rawLog.Lshortfile)
 		log.SetLevel(log.DebugLevel)
@@ -65,11 +70,6 @@ func main() {
 	p, err := proxy.NewProxy(opts)
 	if err != nil {
 		log.Fatal(err)
-	}
-
-	if config.version {
-		fmt.Println("go-mitmproxy: " + p.Version)
-		os.Exit(0)
 	}
 
 	log.Infof("go-mitmproxy version %v\n", p.Version)
