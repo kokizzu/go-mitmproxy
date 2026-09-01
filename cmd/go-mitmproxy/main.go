@@ -69,10 +69,10 @@ func main() {
 
 	p, err := proxy.NewProxy(opts)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("create proxy: %v", err)
 	}
 
-	log.Infof("go-mitmproxy version %v\n", p.Version)
+	log.Infof("go-mitmproxy version %v", p.Version)
 
 	if len(config.IgnoreHosts) > 0 {
 		p.SetShouldInterceptRule(func(req *http.Request) bool {
