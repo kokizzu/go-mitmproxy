@@ -92,7 +92,10 @@ func main() {
 
 	if config.ProxyAuth != "" && strings.ToLower(config.ProxyAuth) != "any" {
 		log.Infoln("Enable entry authentication")
-		auth := NewDefaultBasicAuth(config.ProxyAuth)
+		auth, err := NewDefaultBasicAuth(config.ProxyAuth)
+		if err != nil {
+			log.Fatalf("create basic auth: %v", err)
+		}
 		p.SetAuthProxy(auth.EntryAuth)
 	}
 
