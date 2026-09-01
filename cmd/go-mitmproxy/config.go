@@ -85,8 +85,7 @@ func loadConfig() *Config {
 
 	fileConfig, err := loadConfigFromFile(cliConfig.filename)
 	if err != nil {
-		log.Warnf("read config from %v error %v", cliConfig.filename, err)
-		return cliConfig
+		log.Fatalf("read config from %v error %v", cliConfig.filename, err)
 	}
 	return mergeConfigs(fileConfig, cliConfig, setFlags)
 }
