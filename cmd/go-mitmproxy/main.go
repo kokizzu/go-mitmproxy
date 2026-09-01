@@ -15,7 +15,8 @@ import (
 )
 
 type Config struct {
-	version bool // show go-mitmproxy version
+	version  bool   // show go-mitmproxy version
+	filename string // read config from the filename
 
 	Addr         string   // proxy listen addr
 	WebAddr      string   // web interface listen addr
@@ -31,11 +32,7 @@ type Config struct {
 	MapRemote    string   // map remote config filename
 	MapLocal     string   // map local config filename
 	LogFile      string   // log file path
-
-	filename string // read config from the filename
-
-	ProxyAuth string // Require proxy authentication
-
+	ProxyAuth    string   // Require proxy authentication
 }
 
 func main() {

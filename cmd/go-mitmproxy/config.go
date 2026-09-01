@@ -42,51 +42,30 @@ func loadConfigFromCli() *Config {
 	return config
 }
 
-func mergeConfigs(fileConfig, cliConfig *Config) *Config {
+func mergeConfigs(fileConfig, cliConfig *Config, setFlags map[string]bool) *Config {
 	config := new(Config)
 	*config = *fileConfig
-	if cliConfig.Addr != "" {
-		config.Addr = cliConfig.Addr
+	merge := func(name string, apply func()) {
+		if setFlags[name] {
+			apply()
+		}
 	}
-	if cliConfig.WebAddr != "" {
-		config.WebAddr = cliConfig.WebAddr
-	}
-	if cliConfig.SslInsecure {
-		config.SslInsecure = cliConfig.SslInsecure
-	}
-	if len(cliConfig.IgnoreHosts) > 0 {
-		config.IgnoreHosts = cliConfig.IgnoreHosts
-	}
-	if len(cliConfig.AllowHosts) > 0 {
-		config.AllowHosts = cliConfig.AllowHosts
-	}
-	if cliConfig.CertPath != "" {
-		config.CertPath = cliConfig.CertPath
-	}
-	if cliConfig.Debug != 0 {
-		config.Debug = cliConfig.Debug
-	}
-	if cliConfig.Dump != "" {
-		config.Dump = cliConfig.Dump
-	}
-	if cliConfig.DumpLevel != 0 {
-		config.DumpLevel = cliConfig.DumpLevel
-	}
-	if cliConfig.Upstream != "" {
-		config.Upstream = cliConfig.Upstream
-	}
-	if !cliConfig.UpstreamCert {
-		config.UpstreamCert = cliConfig.UpstreamCert
-	}
-	if cliConfig.MapRemote != "" {
-		config.MapRemote = cliConfig.MapRemote
-	}
-	if cliConfig.MapLocal != "" {
-		config.MapLocal = cliConfig.MapLocal
-	}
-	if cliConfig.LogFile != "" {
-		config.LogFile = cliConfig.LogFile
-	}
+
+	merge("addr", func() { config.Addr = cliConfig.Addr })
+	merge("web_addr", func() { config.WebAddr = cliConfig.WebAddr })
+	merge("ssl_insecure", func() { config.SslInsecure = cliConfig.SslInsecure })
+	merge("ignore_hosts", func() { config.IgnoreHosts = cliConfig.IgnoreHosts })
+	merge("allow_hosts", func() { config.AllowHosts = cliConfig.AllowHosts })
+	merge("cert_path", func() { config.CertPath = cliConfig.CertPath })
+	merge("debug", func() { config.Debug = cliConfig.Debug })
+	merge("dump", func() { config.Dump = cliConfig.Dump })
+	merge("dump_level", func() { config.DumpLevel = cliConfig.DumpLevel })
+	merge("upstream", func() { config.Upstream = cliConfig.Upstream })
+	merge("upstream_cert", func() { config.UpstreamCert = cliConfig.UpstreamCert })
+	merge("map_remote", func() { config.MapRemote = cliConfig.MapRemote })
+	merge("map_local", func() { config.MapLocal = cliConfig.MapLocal })
+	merge("log_file", func() { config.LogFile = cliConfig.LogFile })
+	merge("proxyauth", func() { config.ProxyAuth = cliConfig.ProxyAuth })
 	return config
 }
 
@@ -99,12 +78,17 @@ func loadConfig() *Config {
 		return cliConfig
 	}
 
+	setFlags := make(map[string]bool)
+	flag.Visit(func(f *flag.Flag) {
+		setFlags[f.Name] = true
+	})
+
 	fileConfig, err := loadConfigFromFile(cliConfig.filename)
 	if err != nil {
 		log.Warnf("read config from %v error %v", cliConfig.filename, err)
 		return cliConfig
 	}
-	return mergeConfigs(fileConfig, cliConfig)
+	return mergeConfigs(fileConfig, cliConfig, setFlags)
 }
 
 // arrayValue 实现了 flag.Value 接口
