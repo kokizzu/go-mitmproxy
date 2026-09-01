@@ -107,6 +107,7 @@ func main() {
 		// Use default logger
 		p.AddAddon(&proxy.LogAddon{})
 	}
+
 	p.AddAddon(web.NewWebAddon(config.WebAddr))
 
 	if config.MapRemote != "" {
